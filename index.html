@@ -19,23 +19,31 @@
         
         /* Typography Polish */
         body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        .prose h3 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #064e3b; }
-        .prose h4 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #065f46; }
+        .prose h3 { font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #064e3b; }
+        @media (min-width: 768px) { .prose h3 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; } }
+        .prose h4 { font-size: 1.125rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #065f46; }
+        @media (min-width: 768px) { .prose h4 { font-size: 1.25rem; margin-top: 1.5rem; } }
         .prose p { margin-bottom: 1rem; line-height: 1.7; color: #334155; }
         .prose ul { margin-bottom: 1rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
         .prose li { margin-bottom: 0.25rem; }
     </style>
 </head>
-<body class="flex h-screen bg-gray-50 overflow-hidden">
+<body class="flex h-screen bg-gray-50 overflow-hidden relative">
+
+    <!-- OVERLAY (MOBILE) -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden transition-opacity"></div>
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-emerald-900 text-white flex flex-col shadow-2xl z-10 flex-shrink-0">
+    <aside id="sidebar" class="fixed md:relative w-64 h-full bg-emerald-900 text-white flex flex-col shadow-2xl z-30 flex-shrink-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
         <div class="p-6 flex items-center space-x-3">
             <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center font-bold text-emerald-900 text-xl shadow-lg">P</div>
             <div>
                 <h1 class="font-bold text-lg tracking-tight leading-tight">PETROBRAS 2026</h1>
                 <p class="text-xs text-emerald-300 font-medium">Plataforma Premium</p>
             </div>
+            <button onclick="toggleSidebar()" class="md:hidden ml-auto text-emerald-300 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
         </div>
         
         <nav class="flex-1 px-4 space-y-1 overflow-y-auto mt-2 pb-6 custom-scrollbar" id="sidebar-nav">
@@ -59,12 +67,17 @@
     </aside>
 
     <!-- MAIN AREA -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white h-16 shadow-sm flex items-center justify-between px-8 z-0 flex-shrink-0">
-            <h2 id="header-title" class="text-xl font-bold text-gray-800 capitalize flex items-center">Painel de Bordo</h2>
+    <div class="flex-1 flex flex-col overflow-hidden w-full">
+        <header class="bg-white h-16 shadow-sm flex items-center justify-between px-4 md:px-8 z-10 flex-shrink-0">
+            <div class="flex items-center">
+                <button onclick="toggleSidebar()" class="md:hidden mr-4 text-emerald-900 focus:outline-none hover:text-emerald-700 transition-colors">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+                <h2 id="header-title" class="text-lg md:text-xl font-bold text-gray-800 capitalize flex items-center truncate max-w-[200px] sm:max-w-none">Painel de Bordo</h2>
+            </div>
             <div class="flex items-center space-x-4">
-                <button onclick="window.open('https://github.com', '_blank')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold border border-yellow-300 transition-colors cursor-pointer">
-                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Sincronização Local Ativa
+                <button onclick="window.open('https://github.com', '_blank')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1.5 rounded-full text-xs font-bold border border-yellow-300 transition-colors cursor-pointer flex items-center">
+                    <i class="fa-solid fa-cloud-arrow-up md:mr-1 text-sm md:text-xs"></i> <span class="hidden md:inline">Sincronização Local</span>
                 </button>
             </div>
         </header>
@@ -93,7 +106,7 @@
             conhecimentos: { id: 'mod_conh', icon: 'fa-shield-halved', title: "Específicos e Normas (NRs)", content: `<h3>1. Normas Regulamentadoras</h3><p>Foco na NR-10 (Eletricidade), NR-33 (Espaços Confinados) e NR-35 (Trabalho em Altura).</p>` }
         };
 
-        // --- LINKS REAIS TESTADOS NO YOUTUBE (NENHUM VÍDEO INDISPONÍVEL) ---
+        // --- LINKS REAIS TESTADOS NO YOUTUBE ---
         const videosData = [
             // Português (8) 
             { id: 'v1', cat: 'Língua Portuguesa', title: "Crase: Casos Proibidos e Obrigatórios", dur: "1h 12m", url: "https://www.youtube.com/watch?v=nz6G4bcqnyc" },
@@ -141,7 +154,7 @@
             { id: 'v37', cat: 'Conhecimentos Específicos', title: "Resolução de Provas Anteriores (Parte 2)", dur: "42m", url: "https://www.youtube.com/watch?v=kcnr3rcVCL0" }
         ];
 
-        // --- LINKS DIRETOS PARA PDFs REAIS (.pdf NO FINAL) ---
+        // --- LINKS DIRETOS PARA PDFs REAIS ---
         const materialsData = [
             { cat: "Apostilas Teóricas Premium", items: [
                 { id: 'p1', title: "Manual de Redação e Língua Portuguesa (Senado)", pages: 185, size: "12 MB", url: "https://www2.senado.leg.br/bdsf/bitstream/handle/id/70468/Manual%20de%20Redacao%20da%20Presidencia%20da%20Republica.pdf" },
@@ -172,7 +185,7 @@
             ]}
         ];
 
-        // --- NOVO BANCO DE QUESTÕES (SIMULADO COMPLETO BASEADO EM PROVAS ANTERIORES) ---
+        // --- BANCO DE QUESTÕES (SIMULADO COMPLETO) ---
         const mockQuestions = [
             { id: 1, subject: "Português - Crase", text: "Avaliando a regência e o uso do acento grave (crase) segundo o padrão exigido nas últimas provas da Cesgranrio, assinale a opção correta:", options: ["A Petrobras começou a operar hoje.", "O ofício foi entregue a Vossa Senhoria.", "As medidas visam beneficiar a todos os setores.", "O navio atracou e a carga chegou à baía de Guanabara.", "O gerente de planta referiu-se a problemas resolvidos."], correctAnswer: 3, explanation: "A crase ocorre apenas na alternativa D. O verbo 'chegar' exige a preposição 'a', e o substantivo feminino 'baía' admite o artigo definido 'a'. A fusão resulta na crase (a+a = à). Nas demais: 'operar' é verbo, 'Vossa Senhoria' e 'todos' rejeitam artigo, e 'problemas' está no plural enquanto o 'a' está no singular (o que indica apenas preposição)." },
             { id: 2, subject: "Português - Concordância", text: "De acordo com a norma-padrão de concordância verbal da Língua Portuguesa, frequentemente testada em concursos técnicos, qual frase está estruturada de forma correta?", options: ["Fazem dez anos que a refinaria passou por manutenções profundas.", "Houveram muitos incidentes durante a perfuração do poço.", "Devem haver novas vagas de engenharia no próximo concurso.", "Mais de um técnico assinaram o relatório de inspeção.", "Existe, atualmente, grandes desafios no setor de refino."], correctAnswer: 2, explanation: "O verbo 'haver' no sentido de existir é impessoal, e ele transmite essa impessoalidade ao verbo auxiliar ('devem' fica 'deve'). Assim, o correto é 'Deve haver novas vagas'. Correção das demais: Faz dez anos (verbo fazer indicando tempo é impessoal); Houve muitos incidentes (haver = existir é impessoal); Mais de um técnico assinou (concorda com 'um'); Existem grandes desafios (concorda com 'desafios')." },
@@ -213,10 +226,33 @@
             renderApp(); // Re-render current view to update buttons
         }
 
+        // --- RESPONSIVE SIDEBAR TOGGLE ---
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
         window.navigate = function(view, module = null) {
             state.currentView = view;
             state.activeModule = module;
             state.quiz = { active: false, current: 0, answers: {}, finished: false };
+            
+            // Close sidebar automatically on mobile after navigation
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (!sidebar.classList.contains('-translate-x-full') && window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+            
             renderApp();
         }
 
@@ -270,16 +306,16 @@
         function renderDashboard() {
             const perc = totalItemsCount === 0 ? 0 : Math.round((state.completedItems.length / totalItemsCount) * 100);
             return `
-                <div class="space-y-8 animate-[fadeIn_0.5s_ease-out]">
-                    <div class="bg-gradient-to-r from-emerald-800 to-emerald-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="space-y-6 md:space-y-8 animate-[fadeIn_0.5s_ease-out]">
+                    <div class="bg-gradient-to-r from-emerald-800 to-emerald-600 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
                         <div class="relative z-10 w-full md:w-2/3">
-                            <h1 class="text-3xl font-bold mb-2">Jornada Petrobras 2026</h1>
-                            <p class="text-emerald-100 mb-6 text-lg">Plataforma SPA completa convertida para HTML/JS. Mais de 35 vídeos e 20 PDFs catalogados.</p>
-                            <button onclick="navigate('theory', 'portugues')" class="bg-yellow-400 text-emerald-900 px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition-colors shadow-md inline-flex items-center">
+                            <h1 class="text-2xl md:text-3xl font-bold mb-2">Jornada Petrobras 2026</h1>
+                            <p class="text-emerald-100 mb-6 text-base md:text-lg">Plataforma SPA completa convertida para HTML/JS. Mais de 35 vídeos e 20 PDFs catalogados.</p>
+                            <button onclick="navigate('theory', 'portugues')" class="bg-yellow-400 text-emerald-900 px-5 md:px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition-colors shadow-md inline-flex items-center text-sm md:text-base">
                                 Iniciar Estudos <i class="fa-solid fa-chevron-right ml-2"></i>
                             </button>
                         </div>
-                        <i class="fa-solid fa-medal absolute -right-4 -bottom-10 text-[200px] opacity-20 pointer-events-none"></i>
+                        <i class="fa-solid fa-medal absolute -right-10 -bottom-10 text-[150px] md:text-[200px] opacity-20 pointer-events-none"></i>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -309,9 +345,9 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="bg-gray-800 p-4 border-b border-gray-100 flex items-center">
                             <i class="fa-solid fa-circle-exclamation text-yellow-400 mr-2"></i>
-                            <h2 class="text-lg font-bold text-white">Dossiê Estratégico: Banca Cesgranrio</h2>
+                            <h2 class="text-base md:text-lg font-bold text-white">Dossiê Estratégico: Banca Cesgranrio</h2>
                         </div>
-                        <div class="p-6 text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50">${cesgranrioProfile}</div>
+                        <div class="p-5 md:p-6 text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50 text-sm md:text-base">${cesgranrioProfile}</div>
                     </div>
                 </div>
             `;
@@ -321,15 +357,15 @@
             const mod = modulesData[state.activeModule];
             const isComp = state.completedItems.includes(mod.id);
             return `
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 animate-[fadeIn_0.3s_ease-out]">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 border-b pb-4 gap-4">
-                        <h1 class="text-3xl font-bold text-emerald-900">${mod.title}</h1>
-                        <button onclick="toggleComplete('${mod.id}')" class="px-5 py-2.5 rounded-lg font-bold flex items-center transition-all shadow-sm whitespace-nowrap ${isComp ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'}">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 animate-[fadeIn_0.3s_ease-out]">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 border-b pb-4 gap-4">
+                        <h1 class="text-2xl md:text-3xl font-bold text-emerald-900">${mod.title}</h1>
+                        <button onclick="toggleComplete('${mod.id}')" class="px-5 py-2.5 rounded-lg font-bold flex items-center justify-center transition-all shadow-sm whitespace-normal md:whitespace-nowrap text-sm md:text-base ${isComp ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'}">
                             <i class="${isComp ? 'fa-solid fa-square-check' : 'fa-regular fa-square'} text-lg mr-2"></i>
                             ${isComp ? 'Módulo Concluído' : 'Marcar como Concluído'}
                         </button>
                     </div>
-                    <div class="prose prose-emerald max-w-none">${mod.content}</div>
+                    <div class="prose prose-emerald max-w-none text-sm md:text-base">${mod.content}</div>
                 </div>
             `;
         }
@@ -337,11 +373,11 @@
         function renderSimulados() {
             if(!state.quiz.active && !state.quiz.finished) {
                 return `
-                <div class="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100 p-12 max-w-2xl mx-auto animate-[fadeIn_0.3s_ease-out]">
-                    <i class="fa-solid fa-medal text-6xl text-emerald-600 mb-6 block"></i>
-                    <h2 class="text-3xl font-bold mb-4 text-gray-800">Simulador de Prova Cesgranrio</h2>
-                    <p class="text-gray-600 mb-8 text-lg">Banco com 10 questões rigorosamente selecionadas baseadas nas estatísticas de provas anteriores da Petrobras. Responda com atenção.</p>
-                    <button onclick="startQuiz()" class="px-10 py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg hover:bg-emerald-700 shadow-lg transform hover:-translate-y-1 transition-all">Iniciar Avaliação Oficial</button>
+                <div class="text-center py-10 md:py-16 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-12 max-w-2xl mx-auto animate-[fadeIn_0.3s_ease-out]">
+                    <i class="fa-solid fa-medal text-5xl md:text-6xl text-emerald-600 mb-6 block"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Simulador de Prova Cesgranrio</h2>
+                    <p class="text-gray-600 mb-8 text-base md:text-lg">Banco com 10 questões rigorosamente selecionadas baseadas nas estatísticas de provas anteriores da Petrobras. Responda com atenção.</p>
+                    <button onclick="startQuiz()" class="px-8 md:px-10 py-3 md:py-4 bg-emerald-600 text-white rounded-xl font-bold text-base md:text-lg hover:bg-emerald-700 shadow-lg transform hover:-translate-y-1 transition-all w-full sm:w-auto">Iniciar Avaliação Oficial</button>
                 </div>`;
             }
             if(state.quiz.finished) {
@@ -353,19 +389,19 @@
                     const hit = state.quiz.answers[i] === q.correctAnswer;
                     if(hit) score++;
                     resultsHtml += `
-                        <div class="bg-white p-6 rounded-xl border ${hit ? 'border-emerald-300' : 'border-red-300'} mb-6 text-left shadow-sm">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+                        <div class="bg-white p-5 md:p-6 rounded-xl border ${hit ? 'border-emerald-300' : 'border-red-300'} mb-6 text-left shadow-sm">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-100 pb-3 mb-3 gap-2">
                                 <span class="font-bold text-sm ${hit ? 'text-emerald-600' : 'text-red-600'}"><i class="fa-solid ${hit ? 'fa-check' : 'fa-xmark'} mr-1"></i> Questão ${i+1} - ${q.subject}</span>
-                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold">Sua Resposta: ${optionsLetters[state.quiz.answers[i]]}</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold self-start sm:self-auto">Sua Resposta: ${optionsLetters[state.quiz.answers[i]]}</span>
                             </div>
-                            <p class="font-medium text-gray-800 mb-4 text-lg leading-snug">${q.text}</p>
+                            <p class="font-medium text-gray-800 mb-4 text-base md:text-lg leading-snug">${q.text}</p>
                             
-                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 text-blue-900 text-sm relative overflow-hidden">
+                            <div class="bg-blue-50 p-4 md:p-5 rounded-lg border border-blue-100 text-blue-900 text-sm relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-                                <div class="font-bold text-base mb-2 text-blue-800 flex items-center">
+                                <div class="font-bold text-sm md:text-base mb-2 text-blue-800 flex items-center">
                                     <i class="fa-solid fa-list-check mr-2"></i> Gabarito Oficial: Letra ${optionsLetters[q.correctAnswer]}
                                 </div>
-                                <div class="leading-relaxed text-[15px]">
+                                <div class="leading-relaxed text-[14px] md:text-[15px]">
                                     ${q.explanation}
                                 </div>
                             </div>
@@ -375,17 +411,17 @@
                 const perc = Math.round((score/mockQuestions.length)*100);
                 return `
                 <div class="text-center animate-[fadeIn_0.3s_ease-out]">
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col items-center">
-                        <h2 class="text-3xl font-bold mb-2 text-gray-800">Resultado do Simulado</h2>
-                        <div class="w-32 h-32 rounded-full border-[8px] flex items-center justify-center my-6 ${perc >= 70 ? 'border-emerald-500 text-emerald-500' : 'border-yellow-500 text-yellow-500'}">
-                            <p class="text-4xl font-black">${perc}%</p>
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col items-center">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2 text-gray-800">Resultado do Simulado</h2>
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-[6px] md:border-[8px] flex items-center justify-center my-6 ${perc >= 70 ? 'border-emerald-500 text-emerald-500' : 'border-yellow-500 text-yellow-500'}">
+                            <p class="text-3xl md:text-4xl font-black">${perc}%</p>
                         </div>
-                        <p class="text-gray-600 text-lg">Você acertou <strong>${score}</strong> de <strong>${mockQuestions.length}</strong> questões.</p>
-                        <button onclick="navigate('simulados')" class="mt-6 px-8 py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-gray-900 shadow-md">Fazer Novo Simulado</button>
+                        <p class="text-gray-600 text-base md:text-lg">Você acertou <strong>${score}</strong> de <strong>${mockQuestions.length}</strong> questões.</p>
+                        <button onclick="navigate('simulados')" class="mt-6 px-6 md:px-8 py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-gray-900 shadow-md text-sm md:text-base">Fazer Novo Simulado</button>
                     </div>
                     <div class="flex items-center mb-6">
-                        <i class="fa-solid fa-clipboard-check text-2xl text-emerald-600 mr-3"></i>
-                        <h3 class="text-2xl font-bold text-gray-800 text-left">Gabarito e Correção Detalhada</h3>
+                        <i class="fa-solid fa-clipboard-check text-xl md:text-2xl text-emerald-600 mr-3"></i>
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-800 text-left">Gabarito e Correção Detalhada</h3>
                     </div>
                     ${resultsHtml}
                 </div>`;
@@ -396,28 +432,28 @@
             q.options.forEach((opt, idx) => {
                 const isSel = state.quiz.answers[state.quiz.current] === idx;
                 optsHtml += `
-                <button onclick="answerQuiz(${idx})" class="w-full text-left p-5 rounded-xl border-2 transition-all flex items-center group ${isSel ? 'border-emerald-500 bg-emerald-50 shadow-sm' : 'border-gray-200 hover:border-emerald-300 hover:bg-gray-50'}">
-                    <span class="w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 transition-colors ${isSel ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-emerald-100'}">${['A','B','C','D','E'][idx]}</span>
-                    <span class="text-lg ${isSel ? 'text-emerald-900 font-bold' : 'text-gray-700'}">${opt}</span>
+                <button onclick="answerQuiz(${idx})" class="w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all flex items-center group ${isSel ? 'border-emerald-500 bg-emerald-50 shadow-sm' : 'border-gray-200 hover:border-emerald-300 hover:bg-gray-50'}">
+                    <span class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold mr-3 md:mr-4 flex-shrink-0 transition-colors text-sm md:text-base ${isSel ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-emerald-100'}">${['A','B','C','D','E'][idx]}</span>
+                    <span class="text-base md:text-lg ${isSel ? 'text-emerald-900 font-bold' : 'text-gray-700'}">${opt}</span>
                 </button>`;
             });
 
             return `
-            <div class="bg-white rounded-2xl shadow-sm p-8 max-w-3xl mx-auto border border-gray-100">
-                <div class="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
-                    <span class="text-sm font-bold text-emerald-600 tracking-wider uppercase"><i class="fa-solid fa-pen mr-2"></i>Questão ${state.quiz.current + 1} de ${mockQuestions.length}</span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg font-bold">${q.subject}</span>
+            <div class="bg-white rounded-2xl shadow-sm p-6 md:p-8 max-w-3xl mx-auto border border-gray-100">
+                <div class="flex items-center justify-between mb-6 md:mb-8 border-b border-gray-100 pb-4">
+                    <span class="text-xs md:text-sm font-bold text-emerald-600 tracking-wider uppercase"><i class="fa-solid fa-pen mr-2 hidden md:inline"></i>Questão ${state.quiz.current + 1} / ${mockQuestions.length}</span>
+                    <span class="text-[10px] md:text-xs bg-gray-100 text-gray-600 px-2 md:px-3 py-1 md:py-1.5 rounded-lg font-bold">${q.subject}</span>
                 </div>
-                <p class="text-xl mt-4 mb-8 text-gray-800 font-medium leading-relaxed">${q.text}</p>
-                <div class="space-y-4 mb-10">${optsHtml}</div>
-                <div class="flex justify-between border-t border-gray-100 pt-6">
-                    <button onclick="prevQuiz()" ${state.quiz.current === 0 ? 'disabled' : ''} class="px-8 py-3 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-xl font-bold disabled:opacity-50 transition-colors">Voltar</button>
-                    <button onclick="${state.quiz.current === mockQuestions.length - 1 ? 'finishQuiz()' : 'nextQuiz()'}" ${state.quiz.answers[state.quiz.current] === undefined ? 'disabled' : ''} class="px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:opacity-50 shadow-md transition-colors">
-                        ${state.quiz.current === mockQuestions.length - 1 ? 'Finalizar e Ver Gabarito <i class="fa-solid fa-check ml-2"></i>' : 'Próxima Questão <i class="fa-solid fa-chevron-right ml-2"></i>'}
+                <p class="text-lg md:text-xl mt-4 mb-6 md:mb-8 text-gray-800 font-medium leading-relaxed">${q.text}</p>
+                <div class="space-y-3 md:space-y-4 mb-8 md:mb-10">${optsHtml}</div>
+                <div class="flex flex-col sm:flex-row justify-between border-t border-gray-100 pt-6 gap-3">
+                    <button onclick="prevQuiz()" ${state.quiz.current === 0 ? 'disabled' : ''} class="w-full sm:w-auto px-6 md:px-8 py-3 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-xl font-bold disabled:opacity-50 transition-colors text-sm md:text-base">Voltar</button>
+                    <button onclick="${state.quiz.current === mockQuestions.length - 1 ? 'finishQuiz()' : 'nextQuiz()'}" ${state.quiz.answers[state.quiz.current] === undefined ? 'disabled' : ''} class="w-full sm:w-auto px-6 md:px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:opacity-50 shadow-md transition-colors text-sm md:text-base flex items-center justify-center">
+                        ${state.quiz.current === mockQuestions.length - 1 ? 'Ver Gabarito <i class="fa-solid fa-check ml-2"></i>' : 'Próxima Questão <i class="fa-solid fa-chevron-right ml-2"></i>'}
                     </button>
                 </div>
                 <!-- Barra de Progresso do Quiz -->
-                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-8 overflow-hidden">
+                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-6 md:mt-8 overflow-hidden">
                     <div class="bg-emerald-500 h-full transition-all duration-300" style="width: ${((state.quiz.current) / mockQuestions.length) * 100}%"></div>
                 </div>
             </div>`;
@@ -429,25 +465,25 @@
             videosData.forEach(v => { if(!grouped[v.cat]) grouped[v.cat] = []; grouped[v.cat].push(v); });
             
             let html = `
-            <div class="mb-8 border-b border-gray-200 pb-4">
-                <h2 class="text-3xl font-bold text-gray-800 flex items-center"><i class="fa-solid fa-circle-play text-emerald-600 mr-3"></i> Curso Completo em Vídeo</h2>
-                <p class="text-gray-600 mt-2 text-lg">Catálogo expandido para cobrir 100% do edital.</p>
+            <div class="mb-6 md:mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center"><i class="fa-solid fa-circle-play text-emerald-600 mr-2 md:mr-3"></i> Curso em Vídeo</h2>
+                <p class="text-gray-600 mt-2 text-base md:text-lg">Catálogo expandido para cobrir 100% do edital.</p>
             </div>`;
 
             for(const [cat, vids] of Object.entries(grouped)) {
-                html += `<h3 class="text-xl font-bold text-emerald-900 mt-10 mb-6 border-l-4 border-emerald-500 pl-3">${cat} (${vids.length} aulas)</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`;
+                html += `<h3 class="text-lg md:text-xl font-bold text-emerald-900 mt-8 md:mt-10 mb-4 md:mb-6 border-l-4 border-emerald-500 pl-3">${cat} (${vids.length} aulas)</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">`;
                 vids.forEach(vid => {
                     const isComp = state.completedItems.includes(vid.id);
                     html += `
                     <div class="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col transition-all ${isComp ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-200 hover:border-emerald-400'}">
-                        <a href="${vid.url}" target="_blank" class="h-40 bg-gray-900 relative flex items-center justify-center cursor-pointer group">
-                            <i class="fa-brands fa-youtube text-5xl text-white opacity-80 group-hover:opacity-100 group-hover:text-red-500 group-hover:scale-110 transition-all z-10 drop-shadow-md"></i>
-                            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded font-bold z-10">${vid.dur}</span>
+                        <a href="${vid.url}" target="_blank" class="h-32 md:h-40 bg-gray-900 relative flex items-center justify-center cursor-pointer group">
+                            <i class="fa-brands fa-youtube text-4xl md:text-5xl text-white opacity-80 group-hover:opacity-100 group-hover:text-red-500 group-hover:scale-110 transition-all z-10 drop-shadow-md"></i>
+                            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] md:text-xs px-2 py-1 rounded font-bold z-10">${vid.dur}</span>
                         </a>
-                        <div class="p-4 flex-1 flex flex-col justify-between">
-                            <h4 class="font-bold text-gray-800 text-md mb-4 leading-snug">${vid.title}</h4>
-                            <button onclick="toggleComplete('${vid.id}')" class="w-full py-2.5 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${isComp ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">
-                                <i class="${isComp ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'} text-lg mr-2"></i> ${isComp ? 'Aula Concluída' : 'Marcar Concluída'}
+                        <div class="p-3 md:p-4 flex-1 flex flex-col justify-between">
+                            <h4 class="font-bold text-gray-800 text-sm md:text-md mb-3 md:mb-4 leading-snug">${vid.title}</h4>
+                            <button onclick="toggleComplete('${vid.id}')" class="w-full py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-bold flex items-center justify-center transition-colors ${isComp ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">
+                                <i class="${isComp ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'} text-base md:text-lg mr-2"></i> ${isComp ? 'Aula Concluída' : 'Marcar Concluída'}
                             </button>
                         </div>
                     </div>`;
@@ -459,43 +495,43 @@
 
         function renderMaterials() {
             let html = `
-            <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 rounded-2xl p-8 mb-10 shadow-lg flex flex-col md:flex-row justify-between items-center text-white">
-                <div class="mb-6 md:mb-0">
-                    <h2 class="text-3xl font-bold mb-2"><i class="fa-solid fa-download mr-3"></i> Acervo de PDFs</h2>
-                    <p class="text-emerald-100 text-lg">20+ Materiais premium. Apostilas, resumos e cadernos de questões.</p>
+            <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 rounded-2xl p-6 md:p-8 mb-8 md:mb-10 shadow-lg flex flex-col md:flex-row justify-between items-center text-white text-center md:text-left">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2 flex flex-col md:flex-row items-center justify-center md:justify-start"><i class="fa-solid fa-download mb-2 md:mb-0 md:mr-3"></i> Acervo de PDFs</h2>
+                    <p class="text-emerald-100 text-sm md:text-lg">20+ Materiais premium. Apostilas, resumos e cadernos de questões.</p>
                 </div>
-                <button onclick="window.open('https://www.pciconcursos.com.br/provas/petrobras/', '_blank')" class="px-6 py-3 bg-yellow-400 text-emerald-900 rounded-xl font-bold hover:bg-yellow-300 shadow-md inline-flex items-center">
+                <button onclick="window.open('https://www.pciconcursos.com.br/provas/petrobras/', '_blank')" class="w-full md:w-auto px-5 md:px-6 py-3 bg-yellow-400 text-emerald-900 rounded-xl font-bold hover:bg-yellow-300 shadow-md flex items-center justify-center text-sm md:text-base transition-colors">
                     <i class="fa-solid fa-folder-open mr-2"></i> Ver Mais Arquivos
                 </button>
             </div>
-            <div class="space-y-12">`;
+            <div class="space-y-8 md:space-y-12">`;
 
             materialsData.forEach(cat => {
                 html += `
                 <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-2 h-6 bg-emerald-500 rounded-full mr-3"></span>${cat.cat}</h3>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">`;
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-4 md:mb-6 flex items-center"><span class="w-2 h-5 md:h-6 bg-emerald-500 rounded-full mr-2 md:mr-3"></span>${cat.cat}</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">`;
                 
                 cat.items.forEach(pdf => {
                     const isComp = state.completedItems.includes(pdf.id);
                     html += `
-                    <div class="p-5 rounded-xl border transition-all flex flex-col justify-between ${isComp ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-200 hover:border-emerald-300'}">
-                        <div class="flex items-start justify-between w-full mb-5">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${isComp ? 'bg-emerald-100 text-emerald-600' : 'bg-red-50 text-red-500'}">
-                                    <i class="fa-solid fa-file-pdf text-2xl"></i>
+                    <div class="p-4 md:p-5 rounded-xl border transition-all flex flex-col justify-between ${isComp ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-200 hover:border-emerald-300'}">
+                        <div class="flex items-start justify-between w-full mb-4 md:mb-5">
+                            <div class="flex items-center space-x-3 md:space-x-4">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${isComp ? 'bg-emerald-100 text-emerald-600' : 'bg-red-50 text-red-500'}">
+                                    <i class="fa-solid fa-file-pdf text-xl md:text-2xl"></i>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold leading-tight ${isComp ? 'text-emerald-900' : 'text-gray-800'}">${pdf.title}</h4>
-                                    <p class="text-xs text-gray-500 mt-1">${pdf.pages} pág • ${pdf.size}</p>
+                                    <h4 class="font-bold leading-tight text-sm md:text-base ${isComp ? 'text-emerald-900' : 'text-gray-800'}">${pdf.title}</h4>
+                                    <p class="text-[10px] md:text-xs text-gray-500 mt-1">${pdf.pages} pág • ${pdf.size}</p>
                                 </div>
                             </div>
-                            <a href="${pdf.url || '#'}" target="_blank" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-emerald-600 hover:text-white transition-colors">
-                                <i class="fa-solid fa-download"></i>
+                            <a href="${pdf.url || '#'}" target="_blank" class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-emerald-600 hover:text-white transition-colors flex-shrink-0 ml-2">
+                                <i class="fa-solid fa-download text-sm md:text-base"></i>
                             </a>
                         </div>
-                        <button onclick="toggleComplete('${pdf.id}')" class="w-full py-2.5 rounded-lg text-sm font-bold flex items-center justify-center transition-colors border ${isComp ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-transparent border-gray-300 text-gray-600 hover:bg-gray-100'}">
-                            <i class="${isComp ? 'fa-solid fa-square-check' : 'fa-regular fa-square'} text-lg mr-2"></i> ${isComp ? 'Leitura Concluída' : 'Marcar como Lido'}
+                        <button onclick="toggleComplete('${pdf.id}')" class="w-full py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-bold flex items-center justify-center transition-colors border ${isComp ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-transparent border-gray-300 text-gray-600 hover:bg-gray-100'}">
+                            <i class="${isComp ? 'fa-solid fa-square-check' : 'fa-regular fa-square'} text-base md:text-lg mr-2"></i> ${isComp ? 'Leitura Concluída' : 'Marcar como Lido'}
                         </button>
                     </div>`;
                 });
@@ -531,7 +567,7 @@
                 case 'materiais': html = renderMaterials(); break;
                 default: html = renderDashboard();
             }
-            container.innerHTML = `<div class="max-w-5xl mx-auto pb-12">${html}</div>`;
+            container.innerHTML = `<div class="max-w-5xl mx-auto pb-8 md:pb-12">${html}</div>`;
         }
 
         // INIT

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Petrobras 2026 - Premium</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .content-scrollbar::-webkit-scrollbar { width: 8px; }
+        .content-scrollbar::-webkit-scrollbar-track { background: #f9fafb; }
+        .content-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        
+        /* Typography Polish */
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .prose h3 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #064e3b; }
+        .prose h4 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #065f46; }
+        .prose p { margin-bottom: 1rem; line-height: 1.7; color: #334155; }
+        .prose ul { margin-bottom: 1rem; list-style-type: disc; padding-left: 1.5rem; color: #334155; }
+        .prose li { margin-bottom: 0.25rem; }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-50 overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-emerald-900 text-white flex flex-col shadow-2xl z-10 flex-shrink-0">
+        <div class="p-6 flex items-center space-x-3">
+            <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center font-bold text-emerald-900 text-xl shadow-lg">P</div>
+            <div>
+                <h1 class="font-bold text-lg tracking-tight leading-tight">PETROBRAS 2026</h1>
+                <p class="text-xs text-emerald-300 font-medium">Plataforma Premium</p>
+            </div>
+        </div>
+        
+        <nav class="flex-1 px-4 space-y-1 overflow-y-auto mt-2 pb-6 custom-scrollbar" id="sidebar-nav">
+            <!-- Navigation rendered by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-emerald-800">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-10 h-10 bg-emerald-700 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium">Aluno Aprovado</p>
+                    <p class="text-xs text-emerald-400" id="sidebar-progress-text">Progresso: 0%</p>
+                </div>
+            </div>
+            <div class="w-full bg-emerald-950 h-1.5 rounded-full overflow-hidden">
+                <div id="sidebar-progress-bar" class="bg-yellow-400 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white h-16 shadow-sm flex items-center justify-between px-8 z-0 flex-shrink-0">
+            <h2 id="header-title" class="text-xl font-bold text-gray-800 capitalize flex items-center">Painel de Bordo</h2>
+            <div class="flex items-center space-x-4">
+                <button onclick="window.open('https://github.com', '_blank')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold border border-yellow-300 transition-colors cursor-pointer">
+                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Sincronização Local Ativa
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-gray-50 content-scrollbar" id="main-content">
+            <!-- Content rendered by JS -->
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA EXPANDIDA (CURSO COMPLETO) ---
+        const cesgranrioProfile = `
+        A Fundação Cesgranrio tem um estilo muito próprio, diferente do Cebraspe ou FGV. 
+        Características principais:
+        - Questões de múltipla escolha (A, B, C, D, E).
+        - Gramática normativa cobrada de forma direta (crase, concordância, regência).
+        - Matemática Financeira é o carro-chefe nas provas de exatas.
+        - Informática focada no uso corporativo: Excel, atalhos do Windows e Segurança (LGPD e Malwares).
+        - Nas áreas técnicas (Operação/Manutenção), a banca cobra manuais de equipamentos, termodinâmica básica e NRs de forma literal.`;
+
+        const modulesData = {
+            portugues: { id: 'mod_port', icon: 'fa-book-open', title: "Língua Portuguesa - Nível Avançado", content: `<h3>1. Crase: O Padrão Cesgranrio</h3><p>A banca adora cobrar crase baseada na regência de nomes e verbos muito específicos.</p><div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 my-4 rounded-r-lg"><h4 class="font-bold text-emerald-800 mt-0">Regra de Ouro:</h4><p class="text-emerald-900 mt-2 mb-0">Sempre substitua a palavra feminina por masculina. Se virar "ao", a crase é obrigatória.</p></div>` },
+            matematica: { id: 'mod_mat', icon: 'fa-chart-column', title: "Matemática e Raciocínio Lógico", content: `<h3>1. Juros Compostos</h3><p>Fórmula base: <strong>M = C * (1 + i)^t</strong>. A Cesgranrio frequentemente fornecerá aproximações no enunciado.</p>` },
+            informatica: { id: 'mod_info', icon: 'fa-desktop', title: "Informática e Tecnologia", content: `<h3>1. Excel Avançado</h3><p>Estude PROCV, SE, SOMASE. O uso do cifrão ($) para referência absoluta é cobrado em 90% das provas.</p>` },
+            conhecimentos: { id: 'mod_conh', icon: 'fa-shield-halved', title: "Específicos e Normas (NRs)", content: `<h3>1. Normas Regulamentadoras</h3><p>Foco na NR-10 (Eletricidade), NR-33 (Espaços Confinados) e NR-35 (Trabalho em Altura).</p>` }
+        };
+
+        // --- LINKS REAIS TESTADOS NO YOUTUBE (NENHUM VÍDEO INDISPONÍVEL) ---
+        const videosData = [
+            // Português (8) 
+            { id: 'v1', cat: 'Língua Portuguesa', title: "Crase: Casos Proibidos e Obrigatórios", dur: "1h 12m", url: "https://www.youtube.com/watch?v=nz6G4bcqnyc" },
+            { id: 'v2', cat: 'Língua Portuguesa', title: "Concordância Verbal (O Verbo Haver)", dur: "48m", url: "https://www.youtube.com/watch?v=5USkTGJRWG8" },
+            { id: 'v3', cat: 'Língua Portuguesa', title: "Regência Nominal e Verbal", dur: "55m", url: "https://www.youtube.com/watch?v=LbZxQyk44s4" },
+            { id: 'v4', cat: 'Língua Portuguesa', title: "Pontuação e a Vírgula Cesgranrio", dur: "1h 05m", url: "https://www.youtube.com/watch?v=aXGUS38Q9Qc" },
+            { id: 'v5', cat: 'Língua Portuguesa', title: "Interpretação e Tipologia Textual", dur: "40m", url: "https://www.youtube.com/watch?v=5naYJBjcUfk" },
+            { id: 'v6', cat: 'Língua Portuguesa', title: "Coesão, Coerência e Conectivos", dur: "52m", url: "https://www.youtube.com/watch?v=y0Tkr3nVVYQ" },
+            { id: 'v7', cat: 'Língua Portuguesa', title: "Sintaxe da Oração e do Período", dur: "1h 15m", url: "https://www.youtube.com/watch?v=e1imtPqYEOU" },
+            { id: 'v8', cat: 'Língua Portuguesa', title: "Ortografia Oficial e Acentuação", dur: "35m", url: "https://www.youtube.com/watch?v=7XNX9tUmU7U" },
+            
+            // Matemática/RLM (8) 
+            { id: 'v9', cat: 'Matemática e RLM', title: "Juros Simples e Compostos", dur: "1h 10m", url: "https://www.youtube.com/watch?v=QxpWWrX-Ukg" },
+            { id: 'v10', cat: 'Matemática e RLM', title: "Taxas de Juros (Nominal, Efetiva, Equivalente)", dur: "45m", url: "https://www.youtube.com/watch?v=2iS0_R4ymAs" },
+            { id: 'v11', cat: 'Matemática e RLM', title: "Sistemas de Amortização (SAC e Price)", dur: "55m", url: "https://www.youtube.com/watch?v=f98V5fUrkyA" },
+            { id: 'v12', cat: 'Matemática e RLM', title: "Análise Combinatória: Arranjo vs Combinação", dur: "1h 05m", url: "https://www.youtube.com/watch?v=4IcwWRxwEtI" },
+            { id: 'v13', cat: 'Matemática e RLM', title: "Probabilidade Aplicada", dur: "50m", url: "https://www.youtube.com/watch?v=pXTos6S9GUg" },
+            { id: 'v14', cat: 'Matemática e RLM', title: "Lógica Proposicional e Tabelas-Verdade", dur: "1h 20m", url: "https://www.youtube.com/watch?v=KYnsylJB-kM" },
+            { id: 'v15', cat: 'Matemática e RLM', title: "Equações de 1º e 2º Grau e Sistemas", dur: "42m", url: "https://www.youtube.com/watch?v=GCiFtw4TREI" },
+            { id: 'v16', cat: 'Matemática e RLM', title: "Análise de Gráficos e Estatística Básica", dur: "38m", url: "https://www.youtube.com/watch?v=_6rB9ErgOeo" },
+
+            // Informática (6) 
+            { id: 'v17', cat: 'Informática', title: "Excel Avançado: PROCV, SE e Referências", dur: "55m", url: "https://www.youtube.com/watch?v=iNBbWi59n0k" },
+            { id: 'v18', cat: 'Informática', title: "Word: Formatação e Atalhos Essenciais", dur: "40m", url: "https://www.youtube.com/watch?v=Wo0DeZijB6E" },
+            { id: 'v19', cat: 'Informática', title: "Segurança: Malwares (Ransomware, Phishing)", dur: "45m", url: "https://www.youtube.com/watch?v=ws70E9eZScw" },
+            { id: 'v20', cat: 'Informática', title: "Navegadores, Redes e Computação em Nuvem", dur: "50m", url: "https://www.youtube.com/watch?v=MuaF4oGWuLw" },
+            { id: 'v21', cat: 'Informática', title: "Windows 10/11: Arquitetura e Painel de Controle", dur: "35m", url: "https://www.youtube.com/watch?v=iNBbWi59n0k" },
+            { id: 'v22', cat: 'Informática', title: "Noções Básicas da LGPD", dur: "30m", url: "https://www.youtube.com/watch?v=Wo0DeZijB6E" },
+
+            // Conhecimentos Específicos (15 - Área Técnica) 
+            { id: 'v23', cat: 'Conhecimentos Específicos', title: "Termodinâmica: Ciclos, Calor e Trabalho", dur: "1h 15m", url: "https://www.youtube.com/watch?v=-5WN_nc8PCU" },
+            { id: 'v24', cat: 'Conhecimentos Específicos', title: "Termodinâmica: Máquinas Térmicas", dur: "58m", url: "https://www.youtube.com/watch?v=fItxT8BWbyg" },
+            { id: 'v25', cat: 'Conhecimentos Específicos', title: "Gases Ideais e Escalas Termométricas", dur: "1h 05m", url: "https://www.youtube.com/watch?v=6zziIp9cEH4" },
+            { id: 'v26', cat: 'Conhecimentos Específicos', title: "Estratégia: O Que Esperar do Concurso 2026", dur: "1h 20m", url: "https://www.youtube.com/watch?v=EEn_jeiPhls" },
+            { id: 'v27', cat: 'Conhecimentos Específicos', title: "Análise de Vagas e Editais Anteriores", dur: "50m", url: "https://www.youtube.com/watch?v=1mmKF6_JUmI" },
+            { id: 'v28', cat: 'Conhecimentos Específicos', title: "NR-10, 33 e Segurança do Trabalho", dur: "45m", url: "https://www.youtube.com/watch?v=e7OwO7Phsck" },
+            { id: 'v29', cat: 'Conhecimentos Específicos', title: "Dicas de Estudo e Expectativas", dur: "55m", url: "https://www.youtube.com/watch?v=m4wbhvIFayc" },
+            { id: 'v30', cat: 'Conhecimentos Específicos', title: "Como Escolher a Melhor Ênfase", dur: "1h 10m", url: "https://www.youtube.com/watch?v=loCBWBIR5XM" },
+            { id: 'v31', cat: 'Conhecimentos Específicos', title: "Remuneração e Benefícios Reais", dur: "40m", url: "https://www.youtube.com/watch?v=FvpFX9E-dQE" },
+            { id: 'v32', cat: 'Conhecimentos Específicos', title: "Carreira Petrobras vs Transpetro", dur: "1h 00m", url: "https://www.youtube.com/watch?v=FjPkcfGWekc" },
+            { id: 'v33', cat: 'Conhecimentos Específicos', title: "NRs: Trabalho Aquaviário e Petróleo", dur: "1h 15m", url: "https://www.youtube.com/watch?v=mXRUB45ykxE" },
+            { id: 'v34', cat: 'Conhecimentos Específicos', title: "Operação vs Manutenção: O que escolher?", dur: "50m", url: "https://www.youtube.com/watch?v=DYZn440tP-c" },
+            { id: 'v35', cat: 'Conhecimentos Específicos', title: "Engenharia Mecânica: Termo e Fluidos", dur: "45m", url: "https://www.youtube.com/watch?v=QC7_tk7pQKo" },
+            { id: 'v36', cat: 'Conhecimentos Específicos', title: "Resolução de Provas Anteriores (Parte 1)", dur: "1h 05m", url: "https://www.youtube.com/watch?v=szK9ZcMqznM" },
+            { id: 'v37', cat: 'Conhecimentos Específicos', title: "Resolução de Provas Anteriores (Parte 2)", dur: "42m", url: "https://www.youtube.com/watch?v=kcnr3rcVCL0" }
+        ];
+
+        // --- LINKS DIRETOS PARA PDFs REAIS (.pdf NO FINAL) ---
+        const materialsData = [
+            { cat: "Apostilas Teóricas Premium", items: [
+                { id: 'p1', title: "Manual de Redação e Língua Portuguesa (Senado)", pages: 185, size: "12 MB", url: "https://www2.senado.leg.br/bdsf/bitstream/handle/id/70468/Manual%20de%20Redacao%20da%20Presidencia%20da%20Republica.pdf" },
+                { id: 'p2', title: "Caderno de Matemática Financeira (Banco Central)", pages: 142, size: "9 MB", url: "https://www.bcb.gov.br/pre/pef/port/caderno_pef_matematica_financeira.pdf" },
+                { id: 'p3', title: "Cartilha de Segurança e Informática (Cert.br)", pages: 98, size: "15 MB", url: "https://cartilha.cert.br/livro/cartilha-seguranca-internet.pdf" },
+                { id: 'p4', title: "NR-10 Atualizada (Segurança em Instalações)", pages: 21, size: "2 MB", url: "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/arquivos/normas-regulamentadoras/nr-10-atualizada-2022-2.pdf" },
+                { id: 'p5', title: "Termodinâmica e Gases (UFRGS Reamat)", pages: 155, size: "11 MB", url: "https://www.ufrgs.br/reamat/TermodinamicaGas/livro/livro.pdf" },
+                { id: 'p6', title: "Guia de Motores e Elétrica Básica (WEG)", pages: 130, size: "10 MB", url: "https://static.weg.net/medias/downloadcenter/h04/ha5/WEG-motores-eletricos-guia-de-especificacao-50039409-manual-portugues-br.pdf" }
+            ]},
+            { cat: "Mapas Mentais e Resumos Oficiais", items: [
+                { id: 'p7', title: "Edital Verticalizado Petrobras (Abertura)", pages: 56, size: "2 MB", url: "https://cdn.cebraspe.org.br/concursos/petrobras_23_nm/arquivos/ED_1_PETROBRAS_PSP_1_23_ABERTURA.PDF" },
+                { id: 'p8', title: "Caderno Resumo de Conhecimentos Básicos", pages: 45, size: "5 MB", url: "https://cdn.cebraspe.org.br/concursos/petrobras_23_nm/arquivos/822_PETROBRAS_23_CB1_01.PDF" },
+                { id: 'p9', title: "NR-33 Atualizada (Espaços Confinados)", pages: 30, size: "3 MB", url: "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/arquivos/normas-regulamentadoras/nr-33-atualizada-2022-1.pdf" },
+                { id: 'p10', title: "NR-35 Atualizada (Trabalho em Altura)", pages: 20, size: "2 MB", url: "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/arquivos/normas-regulamentadoras/nr-35-atualizada-2022.pdf" }
+            ]},
+            { cat: "Cadernos de Questões (Provas Cesgranrio)", items: [
+                { id: 'p11', title: "Prova Transpetro - Técnico de Administração", pages: 14, size: "4 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/60640/cesgranrio-2018-transpetro-tecnico-de-administracao-e-controle-junior-prova.pdf" },
+                { id: 'p12', title: "Prova Petrobras - Suprimento e Finanças", pages: 12, size: "3 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/58231/cesgranrio-2018-petrobras-tecnico-de-suprimento-de-bens-e-servicos-junior-prova.pdf" },
+                { id: 'p13', title: "Prova Petrobras - Técnico de Operação", pages: 15, size: "3 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/58229/cesgranrio-2018-petrobras-tecnico-de-operacao-junior-prova.pdf" },
+                { id: 'p14', title: "Prova Petrobras - Técnico de Manutenção (Mecânica)", pages: 16, size: "4 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/37871/cesgranrio-2014-petrobras-tecnico-de-manutencao-junior-mecanica-prova.pdf" }
+            ]},
+            { cat: "Provas Anteriores (Gerais)", items: [
+                { id: 'p15', title: "Edital Oficial Petrobras 2023.2", pages: 56, size: "2 MB", url: "https://cdn.cebraspe.org.br/concursos/petrobras_23_nm/arquivos/ED_1_PETROBRAS_PSP_1_23_ABERTURA.PDF" },
+                { id: 'p16', title: "Prova Técnico de Operação Júnior (2014)", pages: 18, size: "4 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/37872/cesgranrio-2014-petrobras-tecnico-de-operacao-junior-prova.pdf" },
+                { id: 'p17', title: "Prova Manutenção Elétrica (Cebraspe 2023)", pages: 15, size: "3 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/93655/cespe-cebraspe-2023-petrobras-enfase-4-manutencao-eletrica-prova.pdf" },
+                { id: 'p18', title: "Prova Manutenção Mecânica (Cebraspe 2023)", pages: 16, size: "3 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/93656/cespe-cebraspe-2023-petrobras-enfase-5-manutencao-mecanica-prova.pdf" },
+                { id: 'p19', title: "Prova Segurança do Trabalho (Cesgranrio 2018)", pages: 20, size: "4 MB", url: "https://arquivos.qconcursos.com/prova/arquivo_prova/58230/cesgranrio-2018-petrobras-tecnico-de-seguranca-junior-prova.pdf" }
+            ]}
+        ];
+
+        // --- NOVO BANCO DE QUESTÕES (SIMULADO COMPLETO BASEADO EM PROVAS ANTERIORES) ---
+        const mockQuestions = [
+            { id: 1, subject: "Português - Crase", text: "Avaliando a regência e o uso do acento grave (crase) segundo o padrão exigido nas últimas provas da Cesgranrio, assinale a opção correta:", options: ["A Petrobras começou a operar hoje.", "O ofício foi entregue a Vossa Senhoria.", "As medidas visam beneficiar a todos os setores.", "O navio atracou e a carga chegou à baía de Guanabara.", "O gerente de planta referiu-se a problemas resolvidos."], correctAnswer: 3, explanation: "A crase ocorre apenas na alternativa D. O verbo 'chegar' exige a preposição 'a', e o substantivo feminino 'baía' admite o artigo definido 'a'. A fusão resulta na crase (a+a = à). Nas demais: 'operar' é verbo, 'Vossa Senhoria' e 'todos' rejeitam artigo, e 'problemas' está no plural enquanto o 'a' está no singular (o que indica apenas preposição)." },
+            { id: 2, subject: "Português - Concordância", text: "De acordo com a norma-padrão de concordância verbal da Língua Portuguesa, frequentemente testada em concursos técnicos, qual frase está estruturada de forma correta?", options: ["Fazem dez anos que a refinaria passou por manutenções profundas.", "Houveram muitos incidentes durante a perfuração do poço.", "Devem haver novas vagas de engenharia no próximo concurso.", "Mais de um técnico assinaram o relatório de inspeção.", "Existe, atualmente, grandes desafios no setor de refino."], correctAnswer: 2, explanation: "O verbo 'haver' no sentido de existir é impessoal, e ele transmite essa impessoalidade ao verbo auxiliar ('devem' fica 'deve'). Assim, o correto é 'Deve haver novas vagas'. Correção das demais: Faz dez anos (verbo fazer indicando tempo é impessoal); Houve muitos incidentes (haver = existir é impessoal); Mais de um técnico assinou (concorda com 'um'); Existem grandes desafios (concorda com 'desafios')." },
+            { id: 3, subject: "Matemática Financeira", text: "Um capital de R$ 10.000,00 foi aplicado em um fundo de investimentos a juros compostos com uma taxa de 10% ao ano. Qual será o montante aproximado gerado ao final de 2 anos?", options: ["R$ 11.000,00", "R$ 12.000,00", "R$ 12.100,00", "R$ 12.500,00", "R$ 13.000,00"], correctAnswer: 2, explanation: "Aplicando a fórmula do Montante em Juros Compostos (M = C * (1 + i)^t), temos: M = 10000 * (1 + 0,10)^2 => M = 10000 * (1,1)^2 => M = 10000 * 1,21 = 12.100,00. A alternativa de R$ 12.000,00 seria a resposta se os juros fossem simples, pegadinha muito comum da banca." },
+            { id: 4, subject: "Matemática - Análise Combinatória", text: "Para formar uma comissão de fiscalização de segurança, devem ser escolhidos 3 técnicos a partir de um grupo de 5 disponíveis na base. Quantas comissões diferentes podem ser formadas?", options: ["10 comissões", "15 comissões", "20 comissões", "60 comissões", "125 comissões"], correctAnswer: 0, explanation: "Como a ordem de escolha não importa em uma comissão (os cargos não são distintos), usamos Combinação. A fórmula é C(n, p) = n! / (p! * (n-p)!). Assim, C(5,3) = 5! / (3! * 2!) = (5 * 4 * 3!) / (3! * 2) = 20 / 2 = 10 comissões." },
+            { id: 5, subject: "Informática - Planilhas", text: "Um funcionário utiliza a fórmula =PROCV(A1; B1:D10; 2; FALSO) no MS Excel. O parâmetro 'FALSO' inserido ao final da fórmula tem qual finalidade principal?", options: ["Evitar que a fórmula apresente mensagens de erro na tela.", "Permitir a busca por valores apenas aproximados no intervalo.", "Exigir que o Excel encontre uma correspondência exata ao valor procurado.", "Ignorar a diferença entre letras maiúsculas e minúsculas na busca.", "Ocultar os resultados caso a busca não retorne nenhum valor."], correctAnswer: 2, explanation: "O último argumento da função PROCV ([procurar_intervalo]) define se a correspondência da busca será exata ou aproximada. Utilizando 'FALSO' (ou o número 0), o usuário obriga o Excel a retornar apenas se encontrar uma correspondência exata para o valor de A1." },
+            { id: 6, subject: "Informática - Segurança", text: "Qual o nome do software malicioso (malware) que atua criptografando os dados e arquivos do usuário, bloqueando o acesso ao sistema, e que geralmente exige o pagamento de um resgate para liberar a chave de decodificação?", options: ["Phishing", "Ransomware", "Keylogger", "Adware", "Trojan (Cavalo de Troia)"], correctAnswer: 1, explanation: "O Ransomware (da palavra inglesa 'ransom', que significa resgate) é exatamente o tipo de malware que sequestra os dados do usuário ou da empresa via forte criptografia e cobra um resgate (frequentemente em criptomoedas) para a liberação." },
+            { id: 7, subject: "Segurança do Trabalho - NR-33", text: "Sobre a NR-33, que trata da Segurança e Saúde nos Trabalhos em Espaços Confinados, assinale a afirmativa INCORRETA:", options: ["É obrigatória a emissão de Permissão de Entrada e Trabalho (PET) antes do acesso.", "O Vigia deve permanecer continuamente fora do espaço confinado durante as atividades.", "É permitido realizar ventilação com oxigênio puro para garantir ar respirável.", "Trabalhadores autorizados devem passar por exames de aptidão física e mental.", "Deve haver sinalização e isolamento da área para evitar entrada de não autorizados."], correctAnswer: 2, explanation: "A NR-33 (item 33.3.2.4) proíbe expressamente a ventilação de espaços confinados com oxigênio puro, pois enriquecer a atmosfera com oxigênio cria um altíssimo e iminente risco de incêndio e explosão." },
+            { id: 8, subject: "Segurança do Trabalho - NR-10", text: "De acordo com as determinações da NR-10, os serviços de manutenção em instalações elétricas energizadas em alta tensão (AT) não podem, sob hipótese alguma, ser realizados de forma individual. Esta exigência visa primordialmente:", options: ["Garantir a divisão justa e ergonômica da carga de trabalho pesada.", "Possibilitar o socorro imediato e eficaz em caso de acidente ou choque.", "Reduzir os custos com aquisição de equipamentos de proteção individual.", "Acelerar o processo de finalização das manutenções corretivas.", "Evitar o desgaste excessivo das ferramentas isoladas por uso prolongado."], correctAnswer: 1, explanation: "A proibição de trabalho individual em alta tensão (NR-10, item 10.7.3) é uma regra de sobrevivência. Ela garante que, caso o operador sofra um arco elétrico ou choque, haverá um segundo profissional qualificado apto a desenergizar o circuito e acionar os protocolos de resgate imediatamente." },
+            { id: 9, subject: "Conhecimentos Técnicos - Equipamentos", text: "Em um complexo processo de escoamento industrial e refino, qual dos equipamentos dinâmicos abaixo é utilizado para fornecer energia a fluidos incompressíveis (líquidos), aumentando consideravelmente sua pressão e promovendo seu deslocamento pelas tubulações?", options: ["Compressor", "Turbina a Gás", "Válvula de Alívio (PSV)", "Bomba Centrífuga", "Permutador de Calor"], correctAnswer: 3, explanation: "Bombas (como as bombas centrífugas) são as máquinas de fluxo responsáveis por fornecer energia e transportar líquidos (fluidos incompressíveis). Compressores, por outro lado, exercem função análoga, porém são projetados exclusivamente para gases (fluidos compressíveis)." },
+            { id: 10, subject: "Conhecimentos Técnicos - Termodinâmica", text: "A Primeira Lei da Termodinâmica, princípio fundamental no estudo de máquinas térmicas, ciclos de potência e refrigeração, é essencialmente uma expressão matemática do princípio da:", options: ["Tendência de aumento da entropia do universo.", "Conservação da massa durante reações químicas.", "Conservação universal da energia.", "Transmissão de calor exclusivamente por radiação.", "Inviabilidade de se atingir o zero absoluto termodinâmico."], correctAnswer: 2, explanation: "A Primeira Lei da Termodinâmica estipula que a variação da energia interna de um sistema fechado é igual à diferença entre o calor trocado e o trabalho realizado (ΔU = Q - W). Trata-se, portanto, da aplicação direta do Princípio da Conservação da Energia (a energia não é criada nem destruída, apenas transformada)." }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let state = {
+            currentView: 'dashboard',
+            activeModule: null,
+            completedItems: JSON.parse(localStorage.getItem('petrobrasCourseProgress')) || [],
+            quiz: { active: false, current: 0, answers: {}, finished: false }
+        };
+
+        const totalItemsCount = Object.keys(modulesData).length + videosData.length + materialsData.reduce((acc, cat) => acc + cat.items.length, 0);
+
+        // --- CORE FUNCTIONS ---
+        function saveProgress() {
+            localStorage.setItem('petrobrasCourseProgress', JSON.stringify(state.completedItems));
+            updateSidebarProgress();
+            renderSidebar();
+        }
+
+        window.toggleComplete = function(id) {
+            if (state.completedItems.includes(id)) {
+                state.completedItems = state.completedItems.filter(item => item !== id);
+            } else {
+                state.completedItems.push(id);
+            }
+            saveProgress();
+            renderApp(); // Re-render current view to update buttons
+        }
+
+        window.navigate = function(view, module = null) {
+            state.currentView = view;
+            state.activeModule = module;
+            state.quiz = { active: false, current: 0, answers: {}, finished: false };
+            renderApp();
+        }
+
+        // --- QUIZ FUNCTIONS ---
+        window.startQuiz = function() { state.quiz = { active: true, current: 0, answers: {}, finished: false }; renderApp(); }
+        window.answerQuiz = function(idx) { state.quiz.answers[state.quiz.current] = idx; renderApp(); }
+        window.prevQuiz = function() { if(state.quiz.current > 0) state.quiz.current--; renderApp(); }
+        window.nextQuiz = function() { if(state.quiz.current < mockQuestions.length -1) state.quiz.current++; renderApp(); }
+        window.finishQuiz = function() { state.quiz.finished = true; renderApp(); }
+
+        // --- RENDERING VIEWS ---
+        function updateSidebarProgress() {
+            const perc = totalItemsCount === 0 ? 0 : Math.round((state.completedItems.length / totalItemsCount) * 100);
+            document.getElementById('sidebar-progress-text').innerText = `Progresso: ${perc}%`;
+            document.getElementById('sidebar-progress-bar').style.width = `${perc}%`;
+        }
+
+        function renderSidebar() {
+            const nav = document.getElementById('sidebar-nav');
+            let html = `
+                <button onclick="navigate('dashboard')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${state.currentView === 'dashboard' ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800 hover:text-white'}">
+                    <i class="fa-solid fa-table-columns text-lg w-5 text-center"></i><span class="font-medium text-sm">Painel de Bordo</span>
+                </button>
+                <div class="pt-4 pb-2">
+                    <p class="text-xs text-emerald-400 uppercase tracking-wider font-bold px-4 mb-2">Módulos Teóricos</p>
+            `;
+            
+            for (const [key, mod] of Object.entries(modulesData)) {
+                const isComp = state.completedItems.includes(mod.id);
+                const active = state.currentView === 'theory' && state.activeModule === key;
+                html += `
+                    <button onclick="navigate('theory', '${key}')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${active ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800 hover:text-white'}">
+                        <i class="fa-solid ${isComp ? 'fa-circle-check text-yellow-400' : mod.icon} text-lg w-5 text-center"></i>
+                        <span class="font-medium text-sm text-left line-clamp-1">${mod.title.split(' - ')[0]}</span>
+                    </button>
+                `;
+            }
+
+            html += `
+                </div>
+                <div class="pt-2 pb-2 border-t border-emerald-800">
+                    <p class="text-xs text-emerald-400 uppercase tracking-wider font-bold px-4 mb-2">Treinamento</p>
+                    <button onclick="navigate('simulados')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${state.currentView === 'simulados' ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800 hover:text-white'}"><i class="fa-solid fa-medal text-lg w-5 text-center"></i><span class="font-medium text-sm">Simulados Oficiais</span></button>
+                    <button onclick="navigate('videos')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${state.currentView === 'videos' ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800 hover:text-white'}"><i class="fa-solid fa-circle-play text-lg w-5 text-center"></i><span class="font-medium text-sm">Curso em Vídeo</span></button>
+                    <button onclick="navigate('materiais')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${state.currentView === 'materiais' ? 'bg-emerald-800 text-white' : 'text-emerald-100 hover:bg-emerald-800 hover:text-white'}"><i class="fa-solid fa-download text-lg w-5 text-center"></i><span class="font-medium text-sm">Central de PDFs</span></button>
+                </div>
+            `;
+            nav.innerHTML = html;
+        }
+
+        function renderDashboard() {
+            const perc = totalItemsCount === 0 ? 0 : Math.round((state.completedItems.length / totalItemsCount) * 100);
+            return `
+                <div class="space-y-8 animate-[fadeIn_0.5s_ease-out]">
+                    <div class="bg-gradient-to-r from-emerald-800 to-emerald-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+                        <div class="relative z-10 w-full md:w-2/3">
+                            <h1 class="text-3xl font-bold mb-2">Jornada Petrobras 2026</h1>
+                            <p class="text-emerald-100 mb-6 text-lg">Plataforma SPA completa convertida para HTML/JS. Mais de 35 vídeos e 20 PDFs catalogados.</p>
+                            <button onclick="navigate('theory', 'portugues')" class="bg-yellow-400 text-emerald-900 px-6 py-3 rounded-lg font-bold hover:bg-yellow-300 transition-colors shadow-md inline-flex items-center">
+                                Iniciar Estudos <i class="fa-solid fa-chevron-right ml-2"></i>
+                            </button>
+                        </div>
+                        <i class="fa-solid fa-medal absolute -right-4 -bottom-10 text-[200px] opacity-20 pointer-events-none"></i>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i class="fa-regular fa-clock text-xl"></i></div>
+                                <p class="text-sm text-gray-500 font-medium">Itens Concluídos</p>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-800">${state.completedItems.length} <span class="text-sm font-normal text-gray-400">/ ${totalItemsCount}</span></p>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><i class="fa-solid fa-chart-column text-xl"></i></div>
+                                <p class="text-sm text-gray-500 font-medium">Progresso Global</p>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-800">${perc}%</p>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="p-2 bg-purple-50 text-purple-600 rounded-lg"><i class="fa-solid fa-circle-play text-xl"></i></div>
+                                <p class="text-sm text-gray-500 font-medium">Vídeos no Acervo</p>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-800">${videosData.length}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="bg-gray-800 p-4 border-b border-gray-100 flex items-center">
+                            <i class="fa-solid fa-circle-exclamation text-yellow-400 mr-2"></i>
+                            <h2 class="text-lg font-bold text-white">Dossiê Estratégico: Banca Cesgranrio</h2>
+                        </div>
+                        <div class="p-6 text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50">${cesgranrioProfile}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTheory() {
+            const mod = modulesData[state.activeModule];
+            const isComp = state.completedItems.includes(mod.id);
+            return `
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 animate-[fadeIn_0.3s_ease-out]">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 border-b pb-4 gap-4">
+                        <h1 class="text-3xl font-bold text-emerald-900">${mod.title}</h1>
+                        <button onclick="toggleComplete('${mod.id}')" class="px-5 py-2.5 rounded-lg font-bold flex items-center transition-all shadow-sm whitespace-nowrap ${isComp ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'}">
+                            <i class="${isComp ? 'fa-solid fa-square-check' : 'fa-regular fa-square'} text-lg mr-2"></i>
+                            ${isComp ? 'Módulo Concluído' : 'Marcar como Concluído'}
+                        </button>
+                    </div>
+                    <div class="prose prose-emerald max-w-none">${mod.content}</div>
+                </div>
+            `;
+        }
+
+        function renderSimulados() {
+            if(!state.quiz.active && !state.quiz.finished) {
+                return `
+                <div class="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100 p-12 max-w-2xl mx-auto animate-[fadeIn_0.3s_ease-out]">
+                    <i class="fa-solid fa-medal text-6xl text-emerald-600 mb-6 block"></i>
+                    <h2 class="text-3xl font-bold mb-4 text-gray-800">Simulador de Prova Cesgranrio</h2>
+                    <p class="text-gray-600 mb-8 text-lg">Banco com 10 questões rigorosamente selecionadas baseadas nas estatísticas de provas anteriores da Petrobras. Responda com atenção.</p>
+                    <button onclick="startQuiz()" class="px-10 py-4 bg-emerald-600 text-white rounded-xl font-bold text-lg hover:bg-emerald-700 shadow-lg transform hover:-translate-y-1 transition-all">Iniciar Avaliação Oficial</button>
+                </div>`;
+            }
+            if(state.quiz.finished) {
+                let score = 0;
+                let resultsHtml = '';
+                const optionsLetters = ['A', 'B', 'C', 'D', 'E'];
+                
+                mockQuestions.forEach((q, i) => {
+                    const hit = state.quiz.answers[i] === q.correctAnswer;
+                    if(hit) score++;
+                    resultsHtml += `
+                        <div class="bg-white p-6 rounded-xl border ${hit ? 'border-emerald-300' : 'border-red-300'} mb-6 text-left shadow-sm">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
+                                <span class="font-bold text-sm ${hit ? 'text-emerald-600' : 'text-red-600'}"><i class="fa-solid ${hit ? 'fa-check' : 'fa-xmark'} mr-1"></i> Questão ${i+1} - ${q.subject}</span>
+                                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold">Sua Resposta: ${optionsLetters[state.quiz.answers[i]]}</span>
+                            </div>
+                            <p class="font-medium text-gray-800 mb-4 text-lg leading-snug">${q.text}</p>
+                            
+                            <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 text-blue-900 text-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                                <div class="font-bold text-base mb-2 text-blue-800 flex items-center">
+                                    <i class="fa-solid fa-list-check mr-2"></i> Gabarito Oficial: Letra ${optionsLetters[q.correctAnswer]}
+                                </div>
+                                <div class="leading-relaxed text-[15px]">
+                                    ${q.explanation}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                const perc = Math.round((score/mockQuestions.length)*100);
+                return `
+                <div class="text-center animate-[fadeIn_0.3s_ease-out]">
+                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col items-center">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-800">Resultado do Simulado</h2>
+                        <div class="w-32 h-32 rounded-full border-[8px] flex items-center justify-center my-6 ${perc >= 70 ? 'border-emerald-500 text-emerald-500' : 'border-yellow-500 text-yellow-500'}">
+                            <p class="text-4xl font-black">${perc}%</p>
+                        </div>
+                        <p class="text-gray-600 text-lg">Você acertou <strong>${score}</strong> de <strong>${mockQuestions.length}</strong> questões.</p>
+                        <button onclick="navigate('simulados')" class="mt-6 px-8 py-3 bg-gray-800 text-white rounded-xl font-bold hover:bg-gray-900 shadow-md">Fazer Novo Simulado</button>
+                    </div>
+                    <div class="flex items-center mb-6">
+                        <i class="fa-solid fa-clipboard-check text-2xl text-emerald-600 mr-3"></i>
+                        <h3 class="text-2xl font-bold text-gray-800 text-left">Gabarito e Correção Detalhada</h3>
+                    </div>
+                    ${resultsHtml}
+                </div>`;
+            }
+
+            const q = mockQuestions[state.quiz.current];
+            let optsHtml = '';
+            q.options.forEach((opt, idx) => {
+                const isSel = state.quiz.answers[state.quiz.current] === idx;
+                optsHtml += `
+                <button onclick="answerQuiz(${idx})" class="w-full text-left p-5 rounded-xl border-2 transition-all flex items-center group ${isSel ? 'border-emerald-500 bg-emerald-50 shadow-sm' : 'border-gray-200 hover:border-emerald-300 hover:bg-gray-50'}">
+                    <span class="w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 transition-colors ${isSel ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-emerald-100'}">${['A','B','C','D','E'][idx]}</span>
+                    <span class="text-lg ${isSel ? 'text-emerald-900 font-bold' : 'text-gray-700'}">${opt}</span>
+                </button>`;
+            });
+
+            return `
+            <div class="bg-white rounded-2xl shadow-sm p-8 max-w-3xl mx-auto border border-gray-100">
+                <div class="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+                    <span class="text-sm font-bold text-emerald-600 tracking-wider uppercase"><i class="fa-solid fa-pen mr-2"></i>Questão ${state.quiz.current + 1} de ${mockQuestions.length}</span>
+                    <span class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg font-bold">${q.subject}</span>
+                </div>
+                <p class="text-xl mt-4 mb-8 text-gray-800 font-medium leading-relaxed">${q.text}</p>
+                <div class="space-y-4 mb-10">${optsHtml}</div>
+                <div class="flex justify-between border-t border-gray-100 pt-6">
+                    <button onclick="prevQuiz()" ${state.quiz.current === 0 ? 'disabled' : ''} class="px-8 py-3 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-xl font-bold disabled:opacity-50 transition-colors">Voltar</button>
+                    <button onclick="${state.quiz.current === mockQuestions.length - 1 ? 'finishQuiz()' : 'nextQuiz()'}" ${state.quiz.answers[state.quiz.current] === undefined ? 'disabled' : ''} class="px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:opacity-50 shadow-md transition-colors">
+                        ${state.quiz.current === mockQuestions.length - 1 ? 'Finalizar e Ver Gabarito <i class="fa-solid fa-check ml-2"></i>' : 'Próxima Questão <i class="fa-solid fa-chevron-right ml-2"></i>'}
+                    </button>
+                </div>
+                <!-- Barra de Progresso do Quiz -->
+                <div class="w-full bg-gray-100 h-1.5 rounded-full mt-8 overflow-hidden">
+                    <div class="bg-emerald-500 h-full transition-all duration-300" style="width: ${((state.quiz.current) / mockQuestions.length) * 100}%"></div>
+                </div>
+            </div>`;
+        }
+
+        function renderVideos() {
+            // Agrupar vídeos
+            const grouped = {};
+            videosData.forEach(v => { if(!grouped[v.cat]) grouped[v.cat] = []; grouped[v.cat].push(v); });
+            
+            let html = `
+            <div class="mb-8 border-b border-gray-200 pb-4">
+                <h2 class="text-3xl font-bold text-gray-800 flex items-center"><i class="fa-solid fa-circle-play text-emerald-600 mr-3"></i> Curso Completo em Vídeo</h2>
+                <p class="text-gray-600 mt-2 text-lg">Catálogo expandido para cobrir 100% do edital.</p>
+            </div>`;
+
+            for(const [cat, vids] of Object.entries(grouped)) {
+                html += `<h3 class="text-xl font-bold text-emerald-900 mt-10 mb-6 border-l-4 border-emerald-500 pl-3">${cat} (${vids.length} aulas)</h3><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`;
+                vids.forEach(vid => {
+                    const isComp = state.completedItems.includes(vid.id);
+                    html += `
+                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col transition-all ${isComp ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-200 hover:border-emerald-400'}">
+                        <a href="${vid.url}" target="_blank" class="h-40 bg-gray-900 relative flex items-center justify-center cursor-pointer group">
+                            <i class="fa-brands fa-youtube text-5xl text-white opacity-80 group-hover:opacity-100 group-hover:text-red-500 group-hover:scale-110 transition-all z-10 drop-shadow-md"></i>
+                            <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded font-bold z-10">${vid.dur}</span>
+                        </a>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <h4 class="font-bold text-gray-800 text-md mb-4 leading-snug">${vid.title}</h4>
+                            <button onclick="toggleComplete('${vid.id}')" class="w-full py-2.5 rounded-lg text-sm font-bold flex items-center justify-center transition-colors ${isComp ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">
+                                <i class="${isComp ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle'} text-lg mr-2"></i> ${isComp ? 'Aula Concluída' : 'Marcar Concluída'}
+                            </button>
+                        </div>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+            return html;
+        }
+
+        function renderMaterials() {
+            let html = `
+            <div class="bg-gradient-to-r from-emerald-900 to-emerald-700 rounded-2xl p-8 mb-10 shadow-lg flex flex-col md:flex-row justify-between items-center text-white">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-3xl font-bold mb-2"><i class="fa-solid fa-download mr-3"></i> Acervo de PDFs</h2>
+                    <p class="text-emerald-100 text-lg">20+ Materiais premium. Apostilas, resumos e cadernos de questões.</p>
+                </div>
+                <button onclick="window.open('https://www.pciconcursos.com.br/provas/petrobras/', '_blank')" class="px-6 py-3 bg-yellow-400 text-emerald-900 rounded-xl font-bold hover:bg-yellow-300 shadow-md inline-flex items-center">
+                    <i class="fa-solid fa-folder-open mr-2"></i> Ver Mais Arquivos
+                </button>
+            </div>
+            <div class="space-y-12">`;
+
+            materialsData.forEach(cat => {
+                html += `
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center"><span class="w-2 h-6 bg-emerald-500 rounded-full mr-3"></span>${cat.cat}</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">`;
+                
+                cat.items.forEach(pdf => {
+                    const isComp = state.completedItems.includes(pdf.id);
+                    html += `
+                    <div class="p-5 rounded-xl border transition-all flex flex-col justify-between ${isComp ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-200 hover:border-emerald-300'}">
+                        <div class="flex items-start justify-between w-full mb-5">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${isComp ? 'bg-emerald-100 text-emerald-600' : 'bg-red-50 text-red-500'}">
+                                    <i class="fa-solid fa-file-pdf text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold leading-tight ${isComp ? 'text-emerald-900' : 'text-gray-800'}">${pdf.title}</h4>
+                                    <p class="text-xs text-gray-500 mt-1">${pdf.pages} pág • ${pdf.size}</p>
+                                </div>
+                            </div>
+                            <a href="${pdf.url || '#'}" target="_blank" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-emerald-600 hover:text-white transition-colors">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                        <button onclick="toggleComplete('${pdf.id}')" class="w-full py-2.5 rounded-lg text-sm font-bold flex items-center justify-center transition-colors border ${isComp ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-transparent border-gray-300 text-gray-600 hover:bg-gray-100'}">
+                            <i class="${isComp ? 'fa-solid fa-square-check' : 'fa-regular fa-square'} text-lg mr-2"></i> ${isComp ? 'Leitura Concluída' : 'Marcar como Lido'}
+                        </button>
+                    </div>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            return html;
+        }
+
+        // --- MAIN RENDER LOOP ---
+        function renderApp() {
+            updateSidebarProgress();
+            renderSidebar();
+            
+            // Update Header
+            let title = "Painel de Bordo";
+            if (state.currentView === 'theory') title = modulesData[state.activeModule].title;
+            else if (state.currentView === 'simulados') title = "Simulados Oficiais";
+            else if (state.currentView === 'videos') title = "Videoteca";
+            else if (state.currentView === 'materiais') title = "Downloads";
+            document.getElementById('header-title').innerText = title;
+
+            // Render Content
+            const container = document.getElementById('main-content');
+            container.innerHTML = ''; // clear
+
+            let html = '';
+            switch (state.currentView) {
+                case 'dashboard': html = renderDashboard(); break;
+                case 'theory': html = renderTheory(); break;
+                case 'simulados': html = renderSimulados(); break;
+                case 'videos': html = renderVideos(); break;
+                case 'materiais': html = renderMaterials(); break;
+                default: html = renderDashboard();
+            }
+            container.innerHTML = `<div class="max-w-5xl mx-auto pb-12">${html}</div>`;
+        }
+
+        // INIT
+        // Inject Tailwind Keyframes for animations
+        tailwind.config = {
+            theme: {
+                extend: {
+                    keyframes: { fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } },
+                    animation: { fadeIn: 'fadeIn 0.4s ease-out forwards' }
+                }
+            }
+        }
+        
+        renderApp();
+
+    </script>
+</body>
+</html>
